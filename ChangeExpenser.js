@@ -20,7 +20,8 @@
   ];
 
 function checkCashRegister(price, cash, cid) {
-  const originalCid = [...cid];
+  const originalCid = cid;
+  const finalOriginalCid = cid;
   let brutChange = cash - price;
 
   let minChange = null;
@@ -41,9 +42,11 @@ function checkCashRegister(price, cash, cid) {
   console.log(mCHange);
   console.log(`Test`);
   if(mCHange.newChange == 0){
-    checkIfClosed(originalCid, mCHange.result);
-    if(false){
-
+    console.log(originalCid)
+    const leftVal = checkIfClosed(originalCid, mCHange.result);
+    
+    if(leftVal == 0){
+      changeRes = {status: "CLOSED", change: finalOriginalCid} ;
     }
     else{
 changeRes = {status: "OPEN", change: mCHange.result} ;
@@ -116,12 +119,14 @@ function getChangeValue(name){
 }
 
 function setChangeValue(changeArr, name, value){
+  let newArr = [];
   for(let i = 0; i < changeArr.length; i++){
+    newArr.push([...changeArr[i]]);
     if(changeArr[i][0] === name){
-      changeArr[i][1] -= value;
+      newArr[i][1] -= value;
     }
   }
-  return changeArr;
+  return newArr;
 }
 
 function checkIfClosed(originalChangeAvailable, finalChange){
@@ -129,7 +134,11 @@ function checkIfClosed(originalChangeAvailable, finalChange){
   for(let i=0 ; i < finalChange.length; i++){
     originalChangeAvailable = setChangeValue(originalChangeAvailable, finalChange[i][0], finalChange[i][1]);
   }
-  console.log('Money left: ');
-  console.log(originalChangeAvailable);
+  return originalChangeAvailable.reduce ( (prev, curr, index) => {
+    if(index == 1){
+      return prev[1] + curr[1];
+    }
+    return prev + curr[1];
+  })
 }
-checkCashRegister(19.5, 20, [["PENNY", 0.5], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]);
+checkCashRegister(19.5, 20, [["PENNY", 0.5], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]])
