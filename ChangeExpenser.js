@@ -1,4 +1,4 @@
-  const changeOptionsArray = [
+const changeOptionsArray = [
     { name : 'PENNY',
       value : 0.001},
     { name : 'NICKEL',
@@ -61,10 +61,12 @@ changeRes = {status: "OPEN", change: mCHange.result} ;
 }
 
 function giveChange(change, availableMoney, result){
+  change = Math.round(change * 100) / 100
   let gratesChangeArray = availableMoney.pop();
   let changeValue = Math.min(Math.floor(change/getChangeValue(gratesChangeArray[0])) * getChangeValue(gratesChangeArray[0]), gratesChangeArray[1]);
   let newChange = change;
   if(changeValue > 0){
+    //console.log('change calue: ', changeValue, change)
     newChange -= changeValue;
     result.push([gratesChangeArray[0], changeValue])
   }
@@ -141,4 +143,3 @@ function checkIfClosed(originalChangeAvailable, finalChange){
     return prev + curr[1];
   })
 }
-checkCashRegister(19.5, 20, [["PENNY", 0.5], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]])
