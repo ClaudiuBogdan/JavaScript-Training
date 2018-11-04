@@ -20,6 +20,7 @@
   ];
 
 function checkCashRegister(price, cash, cid) {
+  const originalCid = [...cid];
   let brutChange = cash - price;
 
   let minChange = null;
@@ -40,6 +41,7 @@ function checkCashRegister(price, cash, cid) {
   console.log(mCHange);
   console.log(`Test`);
   if(mCHange.newChange == 0){
+    checkIfClosed(originalCid, mCHange.result);
     if(false){
 
     }
@@ -111,5 +113,23 @@ function getChangeValue(name){
     }
   }
   return null;
+}
+
+function setChangeValue(changeArr, name, value){
+  for(let i = 0; i < changeArr.length; i++){
+    if(changeArr[i][0] === name){
+      changeArr[i][1] -= value;
+    }
+  }
+  return changeArr;
+}
+
+function checkIfClosed(originalChangeAvailable, finalChange){
+  console.log(finalChange)
+  for(let i=0 ; i < finalChange.length; i++){
+    originalChangeAvailable = setChangeValue(originalChangeAvailable, finalChange[i][0], finalChange[i][1]);
+  }
+  console.log('Money left: ');
+  console.log(originalChangeAvailable);
 }
 checkCashRegister(19.5, 20, [["PENNY", 0.5], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]]);
